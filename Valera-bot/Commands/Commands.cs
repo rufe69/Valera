@@ -12,9 +12,9 @@ namespace Valera_bot
         {
             switch(text)
             {
-                case "/help": return GetHelp();
-                case "/secret":return Secret();
-                case "/repository": return Repository();
+                case " /help": return GetHelp();
+                case " /secret":return Secret();
+                case " /repository": return Repository();
                 default: return "Я тебя не понял";
             }
         }
