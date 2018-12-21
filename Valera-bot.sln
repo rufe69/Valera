@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.106
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Valera-bot", "Valera-bot\Valera-bot.csproj", "{FB06D1BE-0779-4E63-8FFC-723B578E895C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB06D1BE-0779-4E63-8FFC-723B578E895C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB06D1BE-0779-4E63-8FFC-723B578E895C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB06D1BE-0779-4E63-8FFC-723B578E895C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB06D1BE-0779-4E63-8FFC-723B578E895C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF1956E9-5EF3-4484-BE85-A1A2B186E3FB}
+	EndGlobalSection
+EndGlobal

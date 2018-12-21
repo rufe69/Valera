@@ -1,0 +1,31 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:1234/",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "api/Test/5",
+      "environmentVariables": {
+        "VERSION": "5.92",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Valera_bot": {
+      "commandName": "Project",
+      "launchUrl": "api/Test/5",
+      "environmentVariables": {
+        "VERSION": "5.92",
+        "SECRET": "test",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:1234/"
+    }
+  }
+}
