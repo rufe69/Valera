@@ -26,7 +26,7 @@ namespace Valera_bot
 
         private string Secret()
         {
-            return MD5.Create(Environment.GetEnvironmentVariable("SECRET")).ToString();
+            return Environment.GetEnvironmentVariable("SECRET");
         }
 
         private string GetHelp()
