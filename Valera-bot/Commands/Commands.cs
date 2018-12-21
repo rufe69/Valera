@@ -10,13 +10,11 @@ namespace Valera_bot
     {
         internal string ConvertMessage(string text)
         {
-            switch(text)
-            {
-                case " /help": return GetHelp();
-                case " /secret":return Secret();
-                case " /repository": return Repository();
-                default: return "Я тебя не понял";
-            }
+            if(text.Contains("/help")) return GetHelp();
+            if(text.Contains("/secret")) return Secret();
+            if(text.Contains("/repository")) return Repository();
+
+            return "Я тебя не понял";
         }
 
         private string Repository()
