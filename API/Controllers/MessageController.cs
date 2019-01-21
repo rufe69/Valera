@@ -29,7 +29,7 @@ namespace API.Controllers
             var text = await reader.ReadToEndAsync();
 
             var callbackEvent = JsonConvert.DeserializeObject<CallbackEvent>(text);
-            Schedule sc = new Schedule();
+            var sc = new Schedule();
 
             if (text.ToLower().Contains("/"))
             {
@@ -40,7 +40,7 @@ namespace API.Controllers
             }
 
 
-            _messageSender.Send(callbackEvent.Object.Peer_id, callbackEvent.Object.Text);
+            _messageSender.Send(callbackEvent.Object.Peer_id, sc.ConvertMessage(callbackEvent.Object.Text));
 
             await Response.WriteAsync("ok");
         }

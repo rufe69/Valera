@@ -23,11 +23,11 @@ namespace Bot.DAI.Defaults
         public void Send(string peer_id, string message)
         {
             var reqBuilder = new MessageRequestBuilder(_destSystem);
-            reqBuilder.Add("", peer_id);
-            reqBuilder.Add("", message);
-            reqBuilder.Add("", _version);
-            reqBuilder.Add("", _token);
-            reqBuilder.Add("", rnd.Next(int.MinValue, int.MaxValue).ToString());
+            reqBuilder.Add("peer_id", peer_id);
+            reqBuilder.Add("message", message);
+            reqBuilder.Add("v", _version);
+            reqBuilder.Add("access_token", _token);
+            reqBuilder.Add("random_id", rnd.Next(int.MinValue, int.MaxValue).ToString());
 
             var request = WebRequest.Create(reqBuilder.Build());
 

@@ -20,7 +20,7 @@ namespace Bot.DAI.Defaults
 
         public void Add(string name, string value)
         {
-            if (_message[_message.Length] != '?')
+            if (_message[_message.Length-1] != '?')
                 _message += '&';
             _message += $"{name}={value}";
         }
