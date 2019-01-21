@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace Valera_bot
+namespace Bot.API
 {
     public class Commands
     {

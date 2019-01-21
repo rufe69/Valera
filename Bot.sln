@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Valera-bot", "Valera-bot\Valera-bot.csproj", "{FB06D1BE-0779-4E63-8FFC-723B578E895C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot.DAI", "Bot.DAI\Bot.DAI.csproj", "{DA4A9407-2227-4449-8933-B90974BDFF22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bot.DAI", "Bot.DAI\Bot.DAI.csproj", "{DA4A9407-2227-4449-8933-B90974BDFF22}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bot.API", "API\Bot.API.csproj", "{307FDAF0-9BB4-4C6C-A8A3-FCDE04A3E170}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bot.API", "API\Bot.API.csproj", "{307FDAF0-9BB4-4C6C-A8A3-FCDE04A3E170}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FB06D1BE-0779-4E63-8FFC-723B578E895C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB06D1BE-0779-4E63-8FFC-723B578E895C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB06D1BE-0779-4E63-8FFC-723B578E895C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB06D1BE-0779-4E63-8FFC-723B578E895C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DA4A9407-2227-4449-8933-B90974BDFF22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DA4A9407-2227-4449-8933-B90974BDFF22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA4A9407-2227-4449-8933-B90974BDFF22}.Release|Any CPU.ActiveCfg = Release|Any CPU

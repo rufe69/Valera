@@ -6,7 +6,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Valera_bot
+namespace Bot.API
 {
     public class Schedule
     {

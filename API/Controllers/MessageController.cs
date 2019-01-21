@@ -7,6 +7,7 @@ using Bot.DAI;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Newtonsoft.Json;
+using Bot.API;
 
 namespace API.Controllers
 {
@@ -28,6 +29,17 @@ namespace API.Controllers
             var text = await reader.ReadToEndAsync();
 
             var callbackEvent = JsonConvert.DeserializeObject<CallbackEvent>(text);
+            Schedule sc = new Schedule();
+
+            if (text.ToLower().Contains("/"))
+            {
+                var commands = new Commands();
+                _messageSender.Send(callbackEvent.Object.Peer_id, commands.ConvertMessage(callbackEvent.Object.Text));
+                await Response.WriteAsync("ok");
+                return;
+            }
+
+
             _messageSender.Send(callbackEvent.Object.Peer_id, callbackEvent.Object.Text);
 
             await Response.WriteAsync("ok");

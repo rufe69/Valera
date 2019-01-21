@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Valera_bot
+namespace Bot.API
 {
     public class Day
     {
