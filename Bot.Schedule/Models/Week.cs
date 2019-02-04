@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Bot.API
+namespace Bot.Schedule
 {
     public class Week
     {
@@ -16,7 +16,6 @@ namespace Bot.API
             Friday = new Day();
             Saturday = new Day();
         }
-
 
         public string Parity { get; set; }
         public Day Monday { get; set; }

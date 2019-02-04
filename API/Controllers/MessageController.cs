@@ -7,7 +7,8 @@ using Bot.DAI;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Newtonsoft.Json;
-using Bot.API;
+using Bot.Schedule;
+using Bot.Commands;
 
 namespace API.Controllers
 {
