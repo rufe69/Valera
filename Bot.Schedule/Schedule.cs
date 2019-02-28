@@ -22,12 +22,12 @@ namespace Bot.Schedule
         {
             var message = "";
             message += $"{week.Parity}\r\n\r\n";
-            message += $"{ByDayOfWeek(DayOfWeek.Monday)}\r\n";
-            message += $"{ByDayOfWeek(DayOfWeek.Tuesday)}\r\n";
-            message += $"{ByDayOfWeek(DayOfWeek.Wednesday)}\r\n";
-            message += $"{ByDayOfWeek(DayOfWeek.Thursday)}\r\n";
-            message += $"{ByDayOfWeek(DayOfWeek.Friday)}\r\n";
-            message += $"{ByDayOfWeek(DayOfWeek.Saturday)}\r\n";
+            message += $"{ByDayOfWeek(DayOfWeek.Monday, false)}\r\n";
+            message += $"{ByDayOfWeek(DayOfWeek.Tuesday, false)}\r\n";
+            message += $"{ByDayOfWeek(DayOfWeek.Wednesday, false)}\r\n";
+            message += $"{ByDayOfWeek(DayOfWeek.Thursday, false)}\r\n";
+            message += $"{ByDayOfWeek(DayOfWeek.Friday, false)}\r\n";
+            message += $"{ByDayOfWeek(DayOfWeek.Saturday, false)}\r\n";
             
             return message;
         }
@@ -35,10 +35,10 @@ namespace Bot.Schedule
         public string ByDate(DateTime date)
         {
             return $"Расписание на {date.ToShortDateString()}\r\n" +
-                    $"{ByDayOfWeek(date.DayOfWeek)}";
+                    $"{ByDayOfWeek(date.DayOfWeek, true)}";
         }
 
-        public string ByDayOfWeek(DayOfWeek day)
+        public string ByDayOfWeek(DayOfWeek day, bool parity)
         {
             if (day == DayOfWeek.Sunday)
                 return "В воскресенье нет пар";
@@ -51,7 +51,8 @@ namespace Bot.Schedule
                                 .First(x => x.Value.DayOfWeek == day)
                                 .Value;
 
-            daySchedule += $"{week.Parity}:\r\n";
+            if (parity)
+                daySchedule += $"{week.Parity}:\r\n";
             daySchedule += $"{day}:\r\n";
             daySchedule += $"1) {GetLesson(dayOfWeek.First)}\r\n";
             daySchedule += $"2) {GetLesson(dayOfWeek.Second)}\r\n";
