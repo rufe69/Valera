@@ -32,6 +32,7 @@ namespace Bot.DAI.Defaults
             var request = WebRequest.Create(reqBuilder.Build());
 
             var response = request.GetResponse();
+            response.Close();
         }
     }
 }

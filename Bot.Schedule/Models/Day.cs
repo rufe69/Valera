@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Bot.API
+namespace Bot.Schedule
 {
-    public class Day
+    class Day
     {
+        public DayOfWeek DayOfWeek { get; }
+
         public string First { get; set; }
         public string Second { get; set; }
         public string Third { get; set; }
@@ -14,14 +16,9 @@ namespace Bot.API
         public string Fifth { get; set; }
         public string Sixth { get; set; }
 
-        public string GetSchedule()
+        public Day(DayOfWeek day)
         {
-            return $"1) {First}\r\n" +
-                  $"2) {Second}\r\n" +
-                  $"3) {Third}\r\n" +
-                  $"4) {Fourth}\r\n" +
-                  $"5) {Fifth}\r\n" +
-                  $"6) {Sixth}\r\n";
+            DayOfWeek = day;
         }
     }
 }

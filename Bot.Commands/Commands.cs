@@ -4,11 +4,11 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace Bot.API
+namespace Bot.Commands
 {
     public class Commands
     {
-        internal string ConvertMessage(string text)
+        public string ConvertMessage(string text)
         {
             if(text.Contains("/help")) return GetHelp();
             if(text.Contains("/secret")) return Secret();
