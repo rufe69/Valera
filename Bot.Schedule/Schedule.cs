@@ -41,7 +41,7 @@ namespace Bot.Schedule
         public string ByDayOfWeek(DayOfWeek day)
         {
             if (day == DayOfWeek.Sunday)
-                return "В воскресенье нет пар.";
+                return "В воскресенье нет пар";
 
             var daySchedule = "";
             var dayOfWeek = week.GetType()
@@ -51,6 +51,7 @@ namespace Bot.Schedule
                                 .First(x => x.Value.DayOfWeek == day)
                                 .Value;
 
+            daySchedule += $"{week.Parity}:\r\n";
             daySchedule += $"{day}:\r\n";
             daySchedule += $"1) {GetLesson(dayOfWeek.First)}\r\n";
             daySchedule += $"2) {GetLesson(dayOfWeek.Second)}\r\n";
@@ -65,12 +66,12 @@ namespace Bot.Schedule
         private string GetLesson(string lesson)
         {
             if (lesson == "" || lesson == " ")
-                return "----------";
+                return "-- -- -- -- --";
 
             if(lesson.Contains("/"))
             {
                 var splited = lesson.Split("/");
-                return week.Parity == "Сейчас четная неделя" ? splited[1] : splited[0];
+                return $"Нечетная: {splited[1]}\r\n     Четная: {splited[0]}";
             }
 
             return lesson;

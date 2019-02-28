@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
 
@@ -20,18 +21,27 @@ namespace Bot.DAI.Defaults
             rnd = new Random();
         }
 
-        public void Send(string peer_id, string message)
+        async public void Send(string peer_id, string message)
         {
-            var reqBuilder = new MessageRequestBuilder(_destSystem);
+            var reqBuilder = new MessageRequestBuilder();
             reqBuilder.Add("peer_id", peer_id);
             reqBuilder.Add("message", message);
-            reqBuilder.Add("v", _version);
-            reqBuilder.Add("access_token", _token);
             reqBuilder.Add("random_id", rnd.Next(int.MinValue, int.MaxValue).ToString());
 
-            var request = WebRequest.Create(reqBuilder.Build());
+            reqBuilder.Add("v", _version);
+            reqBuilder.Add("access_token", _token);
 
-            var response = request.GetResponse();
+            var request = WebRequest.Create(_destSystem);
+            request.Method = "POST";
+
+            byte[] byteArray = Encoding.UTF8.GetBytes(reqBuilder.Build());
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = byteArray.Length;
+
+            using (Stream dataStream = await request.GetRequestStreamAsync())
+                await dataStream.WriteAsync(byteArray, 0, byteArray.Length);
+
+            var response = await request.GetResponseAsync();
             response.Close();
         }
     }

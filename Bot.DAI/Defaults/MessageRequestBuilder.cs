@@ -8,9 +8,9 @@ namespace Bot.DAI.Defaults
     {
         private string _message;
 
-        public MessageRequestBuilder(string system)
+        public MessageRequestBuilder()
         {
-            _message = system;
+            _message = "";
         }
 
         public string Build()
@@ -20,7 +20,7 @@ namespace Bot.DAI.Defaults
 
         public void Add(string name, string value)
         {
-            if (_message[_message.Length-1] != '?')
+            if (_message.Length != 0)
                 _message += '&';
             _message += $"{name}={value}";
         }
