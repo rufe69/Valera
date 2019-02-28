@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace Bot.Schedule
 {
-    public class Week
+    class Week
     {
         public Week()
         {
-            Monday = new Day();
-            Tuesday = new Day();
-            Wednesday = new Day();
-            Thursday = new Day();
-            Friday = new Day();
-            Saturday = new Day();
+            Monday = new Day(DayOfWeek.Monday);
+            Tuesday = new Day(DayOfWeek.Tuesday);
+            Wednesday = new Day(DayOfWeek.Wednesday);
+            Thursday = new Day(DayOfWeek.Thursday);
+            Friday = new Day(DayOfWeek.Friday);
+            Saturday = new Day(DayOfWeek.Saturday);
         }
 
         public string Parity { get; set; }
@@ -24,29 +24,5 @@ namespace Bot.Schedule
         public Day Thursday { get; set; }
         public Day Friday { get; set; }
         public Day Saturday { get; set; }
-
-        public string GetSchedule()
-        {
-           return $"Понедельник:\r\n{Monday.GetSchedule()}\r\n\r\n" +
-                $"Вторник:\r\n{Tuesday.GetSchedule()}\r\n\r\n" +
-                $"Среда:\r\n{Wednesday.GetSchedule()}\r\n\r\n" +
-                $"Четверг:\r\n{Thursday.GetSchedule()}\r\n\r\n" +
-                $"Пятница:\r\n{Friday.GetSchedule()}\r\n\r\n" +
-                $"Суббота:\r\n{Saturday.GetSchedule()}\r\n\r\n";
-        }
-
-        public string GetSchedule(DayOfWeek dayOfWeek)
-        {
-            switch(dayOfWeek)
-            {
-                case DayOfWeek.Monday: return $"Понедельник:\r\n{Monday.GetSchedule()}";
-                case DayOfWeek.Tuesday: return $"Вторник:\r\n{Tuesday.GetSchedule()}";
-                case DayOfWeek.Wednesday: return $"Среда:\r\n{Wednesday.GetSchedule()}";
-                case DayOfWeek.Thursday: return $"Четверг:\r\n{Thursday.GetSchedule()}";
-                case DayOfWeek.Friday: return $"Пятница:\r\n{Friday.GetSchedule()}";
-                case DayOfWeek.Saturday: return $"Суббота:\r\n{Saturday.GetSchedule()}";
-                default:return "На этот день нет расписания";
-            }
-        }
     }
 }

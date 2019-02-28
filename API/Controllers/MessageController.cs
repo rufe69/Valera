@@ -26,24 +26,22 @@ namespace API.Controllers
         [HttpPost]
         public async void Post()
         {
+            await Response.WriteAsync("ok");
+
             var reader = new StreamReader(HttpContext.Request.Body);
             var text = await reader.ReadToEndAsync();
 
             var callbackEvent = JsonConvert.DeserializeObject<CallbackEvent>(text);
-            var sc = new Schedule();
 
-            if (text.ToLower().Contains("/"))
-            {
-                var commands = new Commands();
-                _messageSender.Send(callbackEvent.Object.Peer_id, commands.ConvertMessage(callbackEvent.Object.Text));
-                await Response.WriteAsync("ok");
-                return;
-            }
+            var requester = callbackEvent.Object.From_id;
+            var conversation = callbackEvent.Object.Peer_id;
+            var message = callbackEvent.Object.Text;
+
+            var schedule = new ScheduleModule();
+            var responseMessage = schedule.Convert(callbackEvent.Object.Text);
 
 
-            _messageSender.Send(callbackEvent.Object.Peer_id, sc.ConvertMessage(callbackEvent.Object.Text));
-
-            await Response.WriteAsync("ok");
+            _messageSender.Send(callbackEvent.Object.Peer_id, responseMessage);
         }
     }
 }

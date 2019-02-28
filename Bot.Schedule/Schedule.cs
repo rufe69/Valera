@@ -8,88 +8,72 @@ using System.Threading.Tasks;
 
 namespace Bot.Schedule
 {
-    public class Schedule
+    class Schedule
     {
-        private ScheduleParser parser;
+        private Week week;
 
-        public Schedule()
+        public Schedule(IScheduleRequestProvider requestProvider)
         {
-            DefaultScheduleRequestProvider scheduleRequestProvider = new DefaultScheduleRequestProvider();
-            parser = new ScheduleParser(scheduleRequestProvider);
+            var parser = new ScheduleParser(requestProvider);
+            week = parser.ParseSchedule();
         }
 
-        public string ConvertMessage(string Message)
+        public string All()
         {
-            var week = parser.ParseSchedule();
-
-            if (Message.ToLower().Contains("понедельник"))
-                return week.GetSchedule(DayOfWeek.Monday);
-            if (Message.ToLower().Contains("вторник"))
-                return week.GetSchedule(DayOfWeek.Tuesday);
-            if (Message.ToLower().Contains("сред"))
-                return week.GetSchedule(DayOfWeek.Wednesday);
-            if (Message.ToLower().Contains("четверг"))
-                return week.GetSchedule(DayOfWeek.Thursday);
-            if (Message.ToLower().Contains("пятниц"))
-                return week.GetSchedule(DayOfWeek.Friday);
-            if (Message.ToLower().Contains("суббот"))
-                return week.GetSchedule(DayOfWeek.Saturday);
-
-            if (Message.ToLower().Contains("послезавтра"))
-            {
-                var now = DateTime.Now;
-                return week.GetSchedule(now.AddDays(2).DayOfWeek);
-            }
-            if (Message.ToLower().Contains("завтра"))
-            {
-                var now = DateTime.Now;
-                return week.GetSchedule(now.AddDays(1).DayOfWeek);
-            }
+            var message = "";
+            message += $"{week.Parity}\r\n\r\n";
+            message += $"{ByDayOfWeek(DayOfWeek.Monday)}\r\n";
+            message += $"{ByDayOfWeek(DayOfWeek.Tuesday)}\r\n";
+            message += $"{ByDayOfWeek(DayOfWeek.Wednesday)}\r\n";
+            message += $"{ByDayOfWeek(DayOfWeek.Thursday)}\r\n";
+            message += $"{ByDayOfWeek(DayOfWeek.Friday)}\r\n";
+            message += $"{ByDayOfWeek(DayOfWeek.Saturday)}\r\n";
             
-            if (Message.ToLower().Contains("позавчера"))
-            {
-                var now = DateTime.Now;
-                // TODO: Исправить баг, который будет возникать, если это будет первый или второй день месяца
-                var yesterday = new DateTime(now.Year, now.Month, now.Day - 2).DayOfWeek;
-                return week.GetSchedule(yesterday);
-            }
-            if (Message.ToLower().Contains("вчера"))
-            {
-                var now = DateTime.Now;
-                // TODO: Исправить баг, который будет возникать, если это будет первый день месяца
-                var yesterday = new DateTime(now.Year, now.Month, now.Day - 1).DayOfWeek;
-                return week.GetSchedule(yesterday);
-            }
-            if (Message.ToLower().Contains("сегодня"))
-            {
-                return week.GetSchedule(DateTime.Now.DayOfWeek);
-            }
-
-
-            if (Message.ToLower().Contains("расписание"))
-            {
-                return week.GetSchedule();
-            }
-
-            return "Я тебя не понял";
+            return message;
         }
 
-        public string ScheduleByDate(DateTime date)
+        public string ByDate(DateTime date)
         {
-            var week = ParseSchedule();
-            return week.GetSchedule(date.DayOfWeek);
+            return $"Расписание на {date.ToShortDateString()}\r\n" +
+                    $"{ByDayOfWeek(date.DayOfWeek)}";
         }
 
-        public string AllSchedule()
+        public string ByDayOfWeek(DayOfWeek day)
         {
-            var week = ParseSchedule();
-            return week.GetSchedule(); 
+            if (day == DayOfWeek.Sunday)
+                return "В воскресенье нет пар.";
+
+            var daySchedule = "";
+            var dayOfWeek = week.GetType()
+                                .GetProperties()
+                                .Where(x => x.PropertyType == typeof(Day))
+                                .ToDictionary(x => x.Name, x => (Day)x.GetValue(week))
+                                .First(x => x.Value.DayOfWeek == day)
+                                .Value;
+
+            daySchedule += $"{day}:\r\n";
+            daySchedule += $"1) {GetLesson(dayOfWeek.First)}\r\n";
+            daySchedule += $"2) {GetLesson(dayOfWeek.Second)}\r\n";
+            daySchedule += $"3) {GetLesson(dayOfWeek.Third)}\r\n";
+            daySchedule += $"4) {GetLesson(dayOfWeek.Fourth)}\r\n";
+            daySchedule += $"5) {GetLesson(dayOfWeek.Fifth)}\r\n";
+            daySchedule += $"6) {GetLesson(dayOfWeek.Sixth)}\r\n";
+
+            return daySchedule;
         }
 
-        public string ScheduleByDayOfWeek(DayOfWeek dayOfWeek)
+        private string GetLesson(string lesson)
         {
-            var week = ParseSchedule();
-            return week.GetSchedule(dayOfWeek);
+            if (lesson == "" || lesson == " ")
+                return "----------";
+
+            if(lesson.Contains("/"))
+            {
+                var splited = lesson.Split("/");
+                return week.Parity == "Сейчас четная неделя" ? splited[1] : splited[0];
+            }
+
+            return lesson;
         }
     }
 }
