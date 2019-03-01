@@ -17,10 +17,12 @@ namespace API.Controllers
     public class MessageController : Controller
     {
         private readonly IMessageSender _messageSender;
+		private readonly IEnumerable<IModule> _modules;
 
-        public MessageController(IMessageSender messageSender)
+        public MessageController(IMessageSender messageSender, IEnumerable<IModule> modules)
         {
             _messageSender = messageSender;
+			_modules = modules;
         }
 
         [HttpPost]
@@ -37,9 +39,26 @@ namespace API.Controllers
             var conversation = callbackEvent.Object.Peer_id;
             var message = callbackEvent.Object.Text;
 
-            var schedule = new ScheduleModule();
-            var responseMessage = schedule.Convert(callbackEvent.Object.Text);
-
+			var responseMessage = "";
+			foreach (var module in _modules)
+			{
+				try
+				{
+					if (module.Contains(message))
+					{
+						responseMessage = module.Convert(message);
+						break;
+					}
+				}
+				catch (Exception ex)
+				{
+					ErrorConsole.WriteLine($"({module}) Internal Module Error: {ex.Message}");
+					responseMessage = "Произошла ошибка!";
+					break;
+				}
+			}
+			if (_modules.Count() == 0)
+				responseMessage = "Мне нечем обрабатывать сообщение(";
 
             _messageSender.Send(callbackEvent.Object.Peer_id, responseMessage);
         }

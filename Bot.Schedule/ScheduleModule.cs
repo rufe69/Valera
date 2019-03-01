@@ -17,7 +17,9 @@ namespace Bot.Schedule
 
         public bool Contains(string message)
         {
-            throw new NotImplementedException();
+			//TODO: realize it
+			//return true;
+			throw new NotImplementedException();
         }
     }
 }
