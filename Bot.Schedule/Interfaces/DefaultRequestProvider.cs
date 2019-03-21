@@ -11,7 +11,7 @@ namespace Bot.Schedule
 
 		public DefaultRequestProvider(string Group)
 		{
-			_group = Group;
+			_group = Group.Replace(" ", string.Empty);
 		}
 
         public async Task<string> GetSchedule()
