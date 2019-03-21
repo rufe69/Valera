@@ -9,7 +9,7 @@ namespace API
 		public static void WriteLine(string text)
 		{
 			Console.ForegroundColor = ConsoleColor.Red; // устанавливаем цвет
-			Console.WriteLine(text);
+			Console.WriteLine($"Error: {text}");
 			Console.ResetColor();
 		}
 	}

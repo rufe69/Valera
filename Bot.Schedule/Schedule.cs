@@ -1,81 +1,103 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Bot.Schedule
 {
-    class Schedule
-    {
-        private Week week;
+	class Schedule
+	{
+		private Week week;
 
-        public Schedule(IScheduleRequestProvider requestProvider)
-        {
-            var parser = new ScheduleParser(requestProvider);
-            week = parser.ParseSchedule();
-        }
+		public Schedule(IRequestProvider requestProvider)
+		{
+			var parser = new ScheduleParser(requestProvider);
+			week = parser.ParseSchedule();
+		}
 
-        public string All()
-        {
-            var message = "";
-            message += $"{week.Parity}\r\n\r\n";
-            message += $"{ByDayOfWeek(DayOfWeek.Monday, false)}\r\n";
-            message += $"{ByDayOfWeek(DayOfWeek.Tuesday, false)}\r\n";
-            message += $"{ByDayOfWeek(DayOfWeek.Wednesday, false)}\r\n";
-            message += $"{ByDayOfWeek(DayOfWeek.Thursday, false)}\r\n";
-            message += $"{ByDayOfWeek(DayOfWeek.Friday, false)}\r\n";
-            message += $"{ByDayOfWeek(DayOfWeek.Saturday, false)}\r\n";
-            
-            return message;
-        }
+		public string All()
+		{
+			if (!WeekContainsLessons())
+				return "Нет пар или группа указана не верно!";
 
-        public string ByDate(DateTime date)
-        {
-            return $"Расписание на {date.ToShortDateString()}\r\n" +
-                    $"{ByDayOfWeek(date.DayOfWeek, true)}";
-        }
+			var message = "";
+			message += $"{week.Parity}\r\n\r\n";
+			message += $"{ByDayOfWeek(DayOfWeek.Monday, false)}\r\n";
+			message += $"{ByDayOfWeek(DayOfWeek.Tuesday, false)}\r\n";
+			message += $"{ByDayOfWeek(DayOfWeek.Wednesday, false)}\r\n";
+			message += $"{ByDayOfWeek(DayOfWeek.Thursday, false)}\r\n";
+			message += $"{ByDayOfWeek(DayOfWeek.Friday, false)}\r\n";
+			message += $"{ByDayOfWeek(DayOfWeek.Saturday, false)}\r\n";
 
-        public string ByDayOfWeek(DayOfWeek day, bool parity)
-        {
-            if (day == DayOfWeek.Sunday)
-                return "В воскресенье нет пар";
+			return message;
+		}
 
-            var daySchedule = "";
-            var dayOfWeek = week.GetType()
-                                .GetProperties()
-                                .Where(x => x.PropertyType == typeof(Day))
-                                .ToDictionary(x => x.Name, x => (Day)x.GetValue(week))
-                                .First(x => x.Value.DayOfWeek == day)
-                                .Value;
+		public string ByDate(DateTime date)
+		{
+			return $"Расписание на {date.ToShortDateString()}\r\n" +
+					$"{ByDayOfWeek(date.DayOfWeek, true)}";
+		}
 
-            if (parity)
-                daySchedule += $"{week.Parity}:\r\n";
-            daySchedule += $"{day}:\r\n";
-            daySchedule += $"1) {GetLesson(dayOfWeek.First)}\r\n";
-            daySchedule += $"2) {GetLesson(dayOfWeek.Second)}\r\n";
-            daySchedule += $"3) {GetLesson(dayOfWeek.Third)}\r\n";
-            daySchedule += $"4) {GetLesson(dayOfWeek.Fourth)}\r\n";
-            daySchedule += $"5) {GetLesson(dayOfWeek.Fifth)}\r\n";
-            daySchedule += $"6) {GetLesson(dayOfWeek.Sixth)}\r\n";
+		public string ByDayOfWeek(DayOfWeek Day, bool Parity)
+		{
+			var dayObject = week.GetType()
+								.GetProperties()
+								.Where(x => x.PropertyType == typeof(Day))
+								.ToDictionary(x => x.Name, x => (Day)x.GetValue(week))
+								.First(x => x.Value.DayOfWeek == Day)
+								.Value;
 
-            return daySchedule;
-        }
+			
 
-        private string GetLesson(string lesson)
-        {
-            if (lesson == "" || lesson == " ")
-                return "-- -- -- -- --";
+			var dayMessage = "";
+			var RuDay = CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(Day);
 
-            if(lesson.Contains("/"))
-            {
-                var splited = lesson.Split("/");
-                return $"Нечетная: {splited[1]}\r\n     Четная: {splited[0]}";
-            }
+			if (Parity)
+				dayMessage += $"{week.Parity}\r\n";
+			dayMessage += $"{RuDay}:\r\n";
+			if (!DayContainsLessons(dayObject))
+				return $"{dayMessage} На этот день пар нет \r\n";
 
-            return lesson;
-        }
-    }
+			dayMessage += $"1) {FormatLesson(dayObject.First)}\r\n";
+			dayMessage += $"2) {FormatLesson(dayObject.Second)}\r\n";
+			dayMessage += $"3) {FormatLesson(dayObject.Third)}\r\n";
+			dayMessage += $"4) {FormatLesson(dayObject.Fourth)}\r\n";
+			dayMessage += $"5) {FormatLesson(dayObject.Fifth)}\r\n";
+			dayMessage += $"6) {FormatLesson(dayObject.Sixth)}\r\n";
+
+			return dayMessage;
+		}
+
+		private string FormatLesson(string lesson)
+		{
+			if (lesson == "" || lesson == " ")
+				return "-- -- -- -- --";
+
+			if (lesson.Contains("/"))
+			{
+				var splited = lesson.Split("/");
+				return $"Нечетная: {splited[1]}\r\n     Четная: {splited[0]}";
+			}
+
+			return lesson;
+		}
+
+		private bool WeekContainsLessons()
+		{
+			foreach (var prop in week.GetType().GetProperties().Where(x => x.PropertyType == typeof(Day)).ToDictionary(x => x.Name, x => (Day)x.GetValue(week)))
+				if (DayContainsLessons(prop.Value))
+					return true;
+			return false;
+		}
+
+		private bool DayContainsLessons(Day day)
+		{
+			foreach (var dayProp in day.GetType().GetProperties().Where(x => x.PropertyType == typeof(string)))
+			{
+				var lesson = dayProp.GetValue(day).ToString();
+				if (lesson != "" && lesson != " ")
+					return true;
+			}
+			return false;
+		}
+	}
 }

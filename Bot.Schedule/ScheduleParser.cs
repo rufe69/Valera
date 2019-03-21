@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Bot.Schedule
 {
-    class ScheduleParser
+	class ScheduleParser
     {
-        private readonly IScheduleRequestProvider _scheduleRequestProvider;
+        private readonly IRequestProvider _scheduleRequestProvider;
 
-        public ScheduleParser(IScheduleRequestProvider scheduleRequestProvider)
+        public ScheduleParser(IRequestProvider scheduleRequestProvider)
         {
             _scheduleRequestProvider = scheduleRequestProvider;
         }
@@ -26,8 +22,8 @@ namespace Bot.Schedule
             // \<\/{0}\> - закрывающий тег
             // (?<tegData>.+?) - содержимое тега, записываем в группу tegData
 
-            Regex regex = new Regex(pattern, RegexOptions.ExplicitCapture);
-            MatchCollection matches = regex.Matches(text);
+            var regex = new Regex(pattern, RegexOptions.ExplicitCapture);
+            var matches = regex.Matches(text);
 
             var res = "";
             var results = new List<string>();
@@ -42,20 +38,22 @@ namespace Bot.Schedule
             }
 
             var week = AddSchedule(results);
-            Regex reg = new Regex(@"Сейчас [А-Яа-я]+ неделя");
+            var reg = new Regex(@"Сейчас [А-Яа-я]+ неделя");
             week.Parity = reg.Match(text).Value;
 
             return week;
         }
 
+
+
         private string RemoveUnwanted(string text)
         {
             text = Regex.Replace(text, @"\s+", " ");
-            text = text.Replace("\r\n", string.Empty);
+            //text = text.Replace("\r\n", string.Empty);
             text = text.Replace("\"", string.Empty);
             text = text.Replace(" class=position", string.Empty);
-            text = text.Replace(" class=lecture", string.Empty);
-            text = text.Replace(" <span>", string.Empty);
+			text = text.Replace(" <span class=lecture>", "Лекция ");
+			text = text.Replace(" <span>", string.Empty);
             text = text.Replace(" </span>", string.Empty);
 
             return text;
@@ -63,7 +61,7 @@ namespace Bot.Schedule
 
         private Week AddSchedule(List<string> results)
         {
-            Week week = new Week();
+            var week = new Week();
 
             week.Monday.First = results[1];
             week.Monday.Second = results[3];

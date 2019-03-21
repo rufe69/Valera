@@ -1,25 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Bot.DAI;
 
 namespace Bot.Schedule
 {
-    public class ScheduleModule : IModule
+	public class ScheduleModule : IModule
     {
-        MessageConverter converter = new MessageConverter();
-        //Dictionary<string, string> words;
-
         public string Convert(string message)
         {
-            return converter.Convert(message);
+			return new MessageConverter().Convert(message);
         }
 
-        public bool Contains(string message)
-        {
-			//TODO: realize it
-			//return true;
-			throw new NotImplementedException();
-        }
-    }
+		public bool Contains(string message)
+		{
+			foreach (var val in GetSchedulesString())
+				if (message.Contains(val))
+					return true;
+			return false;
+		}
+
+		private List<string> GetSchedulesString()
+		{
+			return new List<string>
+			{
+				"расписание",
+				"рассписание",
+				"росписание",
+				"распесание",
+				"роспесание",
+				"росписание",
+				"распесанее",
+				"росписанее",
+				"расписанее"
+			};
+		}
+	}
 }

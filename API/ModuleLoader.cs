@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
-using System.Threading.Tasks;
 
 namespace API
 {
@@ -18,7 +17,7 @@ namespace API
 				Directory.CreateDirectory(dir);
 
 			var plugins = new List<IModule>();
-			foreach (var pluginPath in Directory.GetFiles(dir))
+			foreach (var pluginPath in Directory.GetFiles(dir,"*.dll"))
 			{
 				var pluginAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(dir, pluginPath));
 				try
