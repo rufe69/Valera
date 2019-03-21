@@ -15,9 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bot.Commands\Bot.Commands.csproj" />
     <ProjectReference Include="..\Bot.DAI\Bot.DAI.csproj" />
-    <ProjectReference Include="..\Bot.Schedule\Bot.Schedule.csproj" />
   </ItemGroup>
 
 </Project>

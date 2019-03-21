@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Bot.Schedule
 {
-    interface IScheduleRequestProvider
+    interface IRequestProvider
     {
         Task<string> GetSchedule();
     }
