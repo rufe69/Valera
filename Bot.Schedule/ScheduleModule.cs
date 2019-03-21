@@ -8,13 +8,13 @@ namespace Bot.Schedule
     {
         public string Convert(string message)
         {
-			return new MessageConverter().Convert(message);
+			return new MessageConverter().Convert(message.ToLower());
         }
 
 		public bool Contains(string message)
 		{
 			foreach (var val in GetSchedulesString())
-				if (message.Contains(val))
+				if (message.ToLower().Contains(val))
 					return true;
 			return false;
 		}
