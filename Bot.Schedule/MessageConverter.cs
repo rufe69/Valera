@@ -27,7 +27,7 @@ namespace Bot.Schedule
 			if(param == "help")
 				return _infoMessage;
 
-			var group = new Regex(@"\d\d\d\d").Match(Message).Value;
+			var group = new Regex(@" \d\d\d\d ").Match(Message).Value;
 			if (group == "")
 				return $"{_groupMissMessage} \r\n\r\n{_infoMessage}";
 
