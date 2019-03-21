@@ -53,7 +53,7 @@ namespace API.Controllers
 					catch (Exception ex)
 					{
 						ErrorConsole.WriteLine($"({module}) Internal Module Error: {ex.Message}");
-						responseMessage = "Произошла ошибка!";
+						responseMessage = $"({module}) Internal Module Error: {ex.Message}";
 						break;
 					}
 				}
